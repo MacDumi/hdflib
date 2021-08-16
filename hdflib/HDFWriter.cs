@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -30,12 +31,22 @@ namespace hdflib
         /// <summary>
         /// Constructor for creating a HDFWriter based on a filename.
         /// </summary>
-        /// <param name="filename"></param>
-        public HDFWriter(string filename)
+        /// <param name="filename">Path to the file</param>
+        /// <param name="overwrite">Overwrite the existing file or append to it</param>
+        public HDFWriter(string filename, bool overwrite = true)
         {
             this.filename = filename;
-            // open handle
-            this.h5FileId = H5F.create(filename, H5F.ACC_TRUNC);
+            if (overwrite || !File.Exists(filename))
+            {
+                // Create or overwrite the file
+                this.h5FileId = H5F.create(filename, H5F.ACC_TRUNC);
+            }
+            else
+            {
+                // Open the existing file
+                this.h5FileId = H5F.open(filename, H5F.ACC_RDWR);
+            }
+
         }
 
         /// <summary>
