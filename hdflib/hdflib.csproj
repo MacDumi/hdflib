@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
-    <Authors>Bas de Bree</Authors>
+    <Authors>Bas de Bree, Dumitru Duca </Authors>
     <Company>Bree Tech</Company>
     <Description>a Lightweight library for writing HDF5 datasets</Description>
-    <Copyright>Bree Tech</Copyright>
+    <Copyright>Bree Tech, Dumitru Duca</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/BdeBree/hdflib/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/BdeBree/hdflib/</RepositoryUrl>
