@@ -12,6 +12,7 @@
             using (HDFWriter w = new HDFWriter("test.h5"))
             {
                 // put all examples in the group "example"
+                w.CreateAttribute("/example", "Title", "Description"); // string attribute
                 w.CreateDataset("/example/scalar", scalar); // a single value
                 w.CreateDataset("/example/vector", vector); // an array or vector
                 w.CreateDataset("/example/matrix", matrix); // a 2d matrix 

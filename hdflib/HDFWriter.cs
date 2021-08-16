@@ -151,6 +151,59 @@ namespace hdflib
         }
 
         /// <summary>
+        /// Writes a string attribute to the open hdf file based on the specified path
+        /// 
+        /// i.e. the following method call will result in an attribute {"Title" : "Description"} being written
+        /// to the "examples" group.
+        /// <code>
+        ///    CreateAttribute("/examples", "Title", "Description");
+        /// </code>
+        /// </summary>
+        /// <param name="path">Path to the variable, separated with / </param>
+        /// <param name="title"> the title of the attribute to be written.</param>
+        /// <param name="attribute"> the attribute content to be written.</param>
+
+        public void CreateAttribute(string path, string title, string attribute)
+        {
+            // Check if the path ends with '/', if it doesn't then add it
+            if (!path.EndsWith("/"))
+            {
+                path += '/';
+            }
+            long groupId = PathToGroupId(path);
+
+            // define all the memory space and IDs
+            long attrSpace = 0;
+            long stringId = 0;
+            long attrId = 0;
+            
+            try
+            {
+              attrSpace = H5S.create(H5S.class_t.SCALAR);
+              stringId = H5T.copy(H5T.C_S1);
+              H5T.set_size(stringId, new IntPtr(attribute.Length));
+              attrId = H5A.create(groupId, title, stringId, attrSpace);
+            
+              IntPtr descriptionArray = Marshal.StringToHGlobalAnsi(attribute);
+              H5A.write(attrId, stringId, descriptionArray);
+            
+              Marshal.FreeHGlobal(descriptionArray);
+            
+            }
+            catch (Exception ex)
+            {
+              Console.WriteLine("An exception has occured while adding an attribute " + ex.ToString());
+            }
+            finally
+            {
+              if (attrId != 0) H5A.close(attrId);
+              if (stringId != 0) H5T.close(stringId);
+              if (attrSpace != 0) H5S.close(attrSpace);
+            }
+        }
+
+
+        /// <summary>
         /// Writes a piece of data to the open hdf file based on the specified path.
         /// 
         /// i.e. the following method calls will result in a scalar, vector and matrix being written to the group "examples".
